@@ -1,4 +1,7 @@
 
+
+
+
 const DEFAULT_TEXT_EN = `Hi, this is Tony Stark, and this application is called Echo-Prompt. Picture this: you're gearing up for a high-stakes presentation—maybe unveiling the latest Stark Industries innovation or addressing the United Nations. What you need is not just any teleprompter; you need Echo-Prompt, the future of seamless presentation technology, designed for the modern speaker who demands perfection.
 
 In the heart of my workshop, amidst suits of armor and groundbreaking tech, I've seen the power of effective communication. That's where Echo-Prompt shines. Utilizing cutting-edge WebSpeech API, it offers real-time speech recognition, allowing you to control your presentation flow with just your voice. Imagine standing on stage, captivating your audience, with the freedom to navigate your script effortlessly—no clickers, no distractions, just you and your words in perfect harmony.

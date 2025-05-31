@@ -8,7 +8,7 @@ class Teleprompter {
     this.colorWarnIdx = -1;
     this.play = false;
     this.edit = false;
-    this.settings = ['play', 'restart', 'edit', 'lang', 'bg', 'fg', 'size', 'font', 'margin', 'mirrorv', 'mirrorh', 'showrec', 'clear'];
+    this.settings = ['play', 'restart', 'load', 'save', 'edit', 'lang', 'bg', 'fg', 'size', 'font', 'margin', 'mirrorv', 'mirrorh', 'showrec', 'clear'];
     this.langValues = LANGUAGE_VALUES;
     this.panelOpened = 0;
     this.showMatchIdx = -1;
@@ -26,6 +26,85 @@ class Teleprompter {
     document.getElementById('prev').addEventListener('click', () => this.showPrevious());
     document.getElementById('next').addEventListener('click', () => this.showNext());
     document.getElementById('last').addEventListener('click', () => this.showLast());
+
+  document.getElementById('stop-play').addEventListener('click', () => {
+    if (this.play) {
+      this.stop();
+    } else {
+      this.start();
+    }
+  }
+  );  
+
+
+  }
+
+  loadScript = async () => {
+    try {
+      const response = await fetch('http://svr01:3334/store');
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching online script:', error);
+      return null;
+    }
+  };
+
+  importScript() {
+    //execute the loadScript function and console.log the result
+    this.loadScript().then(script => {
+    if (script) {
+          this.text = script;
+          document.getElementById('text_editor').value = this.text;
+          this.addMessage('success', 'Script loaded successfully.');
+          //remove the message after 5 seconds
+          setTimeout(() => {
+            this.hideMessage(this.msgCounter - 1);
+          }, 2000);
+          this.adaptText();
+          this.applySettings();
+    } else {
+      this.text = 'No script found or error occurred.';
+      document.getElementById('text_editor').value = this.text;
+      this.adaptText();
+    }
+    }).catch(error => {
+      this.text = 'Error in loadScript:' + error;
+      document.getElementById('text_editor').value = this.text;
+      this.adaptText();
+  });
+  }
+
+  saveScript() {
+    const script = document.getElementById('text_editor').value;
+    fetch('http://svr01:3334/store', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: script })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'OK') {
+        this.addMessage('success', 'Script saved successfully.');
+        //remove the message after 5 seconds
+        setTimeout(() => {
+          this.hideMessage(this.msgCounter - 1);
+        }, 2000);
+      } else {
+        this.addMessage('error', 'Failed to save script.');
+        setTimeout(() => {
+          this.hideMessage(this.msgCounter - 1);
+        }, 2000);
+      }
+    })
+    .catch(error => {
+      this.addMessage('error', 'Error saving script: ' + error);
+      setTimeout(() => {
+          this.hideMessage(this.msgCounter - 1);
+        }, 2000);
+    });
   }
 
   showPrevious() {
@@ -92,15 +171,22 @@ class Teleprompter {
   }
 
   settingsClick(setting) {
+    console.log(`Setting clicked: ${setting}`);
     if (setting == 'play') {
       if (!this.edit) {
-        if (this.play) { this.pause();pauseStopwatch();}
-        else {this.start();startStopwatch();}
+        if (this.play) { this.pause();}
+        else {
+          this.start();}
       }
       this.applySettings();
+    } else if (setting == 'load') {
+      this.stop();
+      this.importScript();
+    }else if (setting == 'save') {
+      this.stop();
+      this.saveScript();
     } else if (setting == 'restart') {
       this.stop();
-      resetStopwatch();
       this.applySettings();
     } else if (setting == 'edit') {
       this.stop();
@@ -161,6 +247,7 @@ class Teleprompter {
     }
   }
 
+
   wordClick(numWord) {
     if (this.play) {
       this.currentPosition = min(numWord, this.recText.length);
@@ -178,6 +265,18 @@ class Teleprompter {
 
   start() {
     if (this.speechRec !== null) this.speechRec.stop();
+
+    //hide the div with a class of "top-controls"
+    const topControls = document.querySelector('.top-controls');
+    if (topControls) {
+      topControls.style.display = 'none';
+    }
+
+    const playingControls = document.querySelector('.playing-controls');
+    if (playingControls) {
+      playingControls.style.display = 'block';
+    }
+
     this.play = true;
     this.speechPosition = 0;
     this.currentRecording = [];
@@ -190,11 +289,33 @@ class Teleprompter {
     if (this.speechRec !== null) this.speechRec.stop();
     this.play = false;
     this.currentPosition = 0;
+
+    //show the div with a class of "top-controls"
+    const topControls = document.querySelector('.top-controls');
+    if (topControls) {
+      topControls.style.display = 'block';
+    }
+
+    const playingControls = document.querySelector('.playing-controls');
+    if (playingControls) {
+      playingControls.style.display = 'none';
+    }
   }
 
   pause() {
     if (this.speechRec !== null) this.speechRec.stop();
     this.play = false;
+    
+    //show the div with a class of "top-controls"
+    const topControls = document.querySelector('.top-controls');
+    if (topControls) {
+      topControls.style.display = 'block';
+    }
+
+    const playingControls = document.querySelector('.playing-controls');
+    if (playingControls) {
+      playingControls.style.display = 'none';
+    }
   }
 
   speechResult(type, finalRes, interimRes) {
@@ -540,21 +661,7 @@ class Teleprompter {
       par.removeChild(msg);
     } catch (e) {}
   }
+
+  
 }
 
-// Inside the Teleprompter class or setup function where event listeners are set up
-document.getElementById('s_play').addEventListener('click', function() {
-  // Toggle play/pause for the teleprompter
-  if (this.play) {
-    pauseTeleprompter(); // Assume this function pauses the teleprompter
-    pauseStopwatch();
-  } else {
-    startTeleprompter(); // Assume this function starts the teleprompter
-    startStopwatch();
-  }
-});
-
-document.getElementById('s_restart').addEventListener('click', function() {
-  resetTeleprompter(); // Assume this function resets the teleprompter
-  resetStopwatch();
-});

@@ -41,7 +41,7 @@ body, html {
   flex-grow: 1;
   text-align: center;
   border-radius: 5px; /* Added for rounded corners */
-  max-height: 80vh; /* Adjust based on your layout; vh units make it responsive */
+  max-height: 90vh; /* Adjust based on your layout; vh units make it responsive */
   overflow-y: auto; /* Allows for vertical scrolling */
 }
 
@@ -104,15 +104,7 @@ button:focus {
 }
 
 footer {
-  text-align: center;
-  padding: 20px;
-  background-color: black; /* Dark background */
-  color: white; /* Light text for contrast */
-  font-size: 1rem;
-  position: relative; /* Makes the footer always visible at the bottom */
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  display:none;
 }
 
 /* Custom scrollbar for the whole page */
@@ -157,3 +149,7 @@ footer {
   }
 }
 
+
+.playing-controls {
+  display: none;
+}
