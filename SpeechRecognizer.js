@@ -1,3 +1,4 @@
+
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 
 class SpeechRecognizer {
@@ -73,6 +74,14 @@ class SpeechRecognizer {
       if (this.currentFinal)
         this.oldResults.push(this.currentFinal);
       this.eventListener('end', 'recognition end');
+      // Auto-restart recognition on Android if not stopped due to error
+      if (this.working && this.error === 'none') {
+        try {
+          this.recognition.start();
+        } catch (e) {
+          // Ignore errors on restart
+        }
+      }
     }
   }
 
