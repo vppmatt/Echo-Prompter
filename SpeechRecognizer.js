@@ -69,20 +69,22 @@ class SpeechRecognizer {
   }
 
   endListener(evt) {
-    if (this.working) {
-      this.listening = false;
-      if (this.currentFinal)
-        this.oldResults.push(this.currentFinal);
-      this.eventListener('end', 'recognition end');
-      // Auto-restart recognition on Android if not stopped due to error
-      if (this.working && this.error === 'none') {
-        try {
-          this.recognition.start();
-        } catch (e) {
-          // Ignore errors on restart
-        }
-      }
-    }
+    //always auto restart for android fix
+    this.recognition.start();
+    // if (this.working) {
+    //   this.listening = false;
+    //   if (this.currentFinal)
+    //     this.oldResults.push(this.currentFinal);
+    //   this.eventListener('end', 'recognition end');
+    //   // Auto-restart recognition on Android if not stopped due to error
+    //   if (this.working && this.error === 'none') {
+    //     try {
+    //       this.recognition.start();
+    //     } catch (e) {
+    //       // Ignore errors on restart
+    //     }
+    //   }
+    // }
   }
 
   resultListener(evt) {
