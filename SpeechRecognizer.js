@@ -1,4 +1,3 @@
-
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 
 class SpeechRecognizer {
@@ -69,19 +68,11 @@ class SpeechRecognizer {
   }
 
   endListener(evt) {
-    // Only auto-restart if still working and not explicitly stopped
-    if (this.working && this.listening) {
-      this.currentFinal = '';
-      this.currentInterim = '';
-      this.currentResult = '';
-      try {
-        this.recognition.start();
-      } catch (e) {
-        this.working = false;
-        this.listening = false;
-        this.error = 'API not working';
-        this.eventListener('error', this.error, 'The WebSpeech API in your browser is not working. Use Chrome.');
-      }
+    if (this.working) {
+      this.listening = false;
+      if (this.currentFinal)
+        this.oldResults.push(this.currentFinal);
+      this.eventListener('end', 'recognition end');
     }
   }
 
