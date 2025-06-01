@@ -4,9 +4,11 @@ This is a fork of the Echo-Prompter project at https://github.com/sherwinvishesh
 
 In this fork the changes are:
 - ability to load and save a script. This allows you to (for example) edit a script on a computer and then load it on a tablet. The feature requires a back-end which in this current version is hard coded as running at http://svr01:3334. The back end can be found at https://github.com/vppmatt/telepromptstore
-- ability to view the teleprompter in full screen mode (addition of code that will work on an android tablet + hiding the controls when playing) + hiding the footer when playing
+- ability to view the teleprompter in full screen mode (addition of code that will work on an android tablet* + hiding the controls when playing) + hiding the footer when playing
 - removing the stopwatch / clock feature (as I didn't want it!)
 - a couple of small bug fixes (added misssing success icon / removing code that wasn't needed eg calls to functions that didn't exist)
+
+* I can't get this to work on Android - the speech recognition cuts out after a second of silence and I haven't found a way to fix this. I'm therefore running this on a PC but with screen mirroring to android (using nomachine) which works well enough for my purposes.
 
 THE REST OF THIS README FILE IS THE ORIGINAL README FROM SHERWINVISHESH'S PROJECT (SO THE IMAGE IS NOW OUT OF DATE)
 
