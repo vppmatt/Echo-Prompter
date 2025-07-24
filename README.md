@@ -10,6 +10,12 @@ In this fork the changes are:
 
 * I can't get this to work on Android - the speech recognition cuts out after a second of silence and I haven't found a way to fix this. I'm therefore running this on a PC but with screen mirroring to android (using nomachine) which works well enough for my purposes.
 
+## Note
+
+* I have tried to fix a problem that occurs if you run this on an android device where it stops listening after a few seconds but haven't managed it. Instead I am running this on a PC, with screen mirroring (in fact I'm using NoMachine) to display the content on an Android Tablet used on the teleprompter. 
+
+* Viewing the applicaiton in Chrome requires you to make a settings change to allow the microphone to be used if you are deploying this without an SSL certificate (ie http rather than https). Go to chrome://flags/#unsafely-treat-insecure-origin-as-secure and add the server URL that is hosting this page (in my case http://teleprompter.local) to the box "Insecure origins treated as secure"
+
 THE REST OF THIS README FILE IS THE ORIGINAL README FROM SHERWINVISHESH'S PROJECT (SO THE IMAGE IS NOW OUT OF DATE)
 
 # Echo-Prompter
