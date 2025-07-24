@@ -77,7 +77,7 @@ class Teleprompter {
 
   saveScript() {
     const script = document.getElementById('text_editor').value;
-    fetch('http://telepromptstore.local:3334/store', {
+    fetch('http://telepromptstore.local/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
