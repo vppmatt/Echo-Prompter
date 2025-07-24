@@ -41,7 +41,7 @@ class Teleprompter {
 
   loadScript = async () => {
     try {
-      const response = await fetch('http://telepprompterstore.local/store');
+      const response = await fetch('http://teleprompterstore.local/store');
       const data = await response.json();
       return data.data;
     } catch (error) {
@@ -77,7 +77,7 @@ class Teleprompter {
 
   saveScript() {
     const script = document.getElementById('text_editor').value;
-    fetch('http://telepprompterstore.local:3334/store', {
+    fetch('http://teleprompterstore.local:3334/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
